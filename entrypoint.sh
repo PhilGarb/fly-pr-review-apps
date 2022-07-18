@@ -36,7 +36,7 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   exit 0
 fi
 
-flyctl secrets set "$database"
+flyctl secrets set "$database" --config "$config" --app "$app"
 
 # Deploy the Fly app, creating it first if needed.
 if ! flyctl status --app "$app"; then
