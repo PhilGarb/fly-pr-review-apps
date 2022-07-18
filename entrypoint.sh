@@ -38,7 +38,7 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   exit 0
 fi
 
-echo database
+echo $database
 
 # Deploy the Fly app, creating it first if needed.
 if ! flyctl status --app "$app"; then
