@@ -18,7 +18,7 @@ REPO_NAME=$(jq -r .event.base.repo.name /github/workflow/event.json)
 EVENT_TYPE=$(jq -r .action /github/workflow/event.json)
 
 # Default the Fly app name to pr-{number}-{repo_owner}-{repo_name}
-app="${INPUT_NAME:-pr-$PR_NUMBER}"
+app="${INPUT_NAME:-pr-$PR_NUMBER-open_decision}"
 region="${INPUT_REGION:-${FLY_REGION:-iad}}"
 org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
@@ -37,13 +37,9 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   exit 0
 fi
 
-# Deploy the Fly app, creating it first if needed.
-if ! flyctl status --app "$app"; then
-  flyctl secrets set DATABASE_URL="$DATABASE_URL" --config "$config" --app "$app"
-  flyctl launch --now --copy-config --name "$app" --image "$image" --region "$region" --org "$org"
-elif [ "$INPUT_UPDATE" != "false" ]; then
-  flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
-fi
+flyctl apps create --name "$app"
+flyctl secrets set DATABASE_URL="$DATABASE_URL" --config "$config" --app "$app"
+flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
 
 # Attach postgres cluster to the app if specified.
 if [ -n "$INPUT_POSTGRES" ]; then
