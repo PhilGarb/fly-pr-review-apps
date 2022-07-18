@@ -23,6 +23,7 @@ region="${INPUT_REGION:-${FLY_REGION:-iad}}"
 org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
 config="$INPUT_CONFIG"
+database="${DATABASE_URL=INPUT_DATABASE}"
 
 if ! echo "$app" | grep "$PR_NUMBER"; then
   echo "For safety, this action requires the app's name to contain the PR number."
@@ -34,6 +35,8 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   flyctl apps destroy "$app" -y || true
   exit 0
 fi
+
+flyctl secrets set "$database"
 
 # Deploy the Fly app, creating it first if needed.
 if ! flyctl status --app "$app"; then
