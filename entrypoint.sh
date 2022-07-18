@@ -23,7 +23,7 @@ region="${INPUT_REGION:-${FLY_REGION:-iad}}"
 org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
 config="$INPUT_CONFIG"
-database="${DATABASE_URL=$INPUT_DATABASE}"
+database="${DATABASE_URL=${DATABASE_URL}}"
 
 sed s/od-api/"$app"/g 
 
