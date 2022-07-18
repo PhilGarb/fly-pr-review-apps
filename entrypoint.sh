@@ -23,7 +23,6 @@ region="${INPUT_REGION:-${FLY_REGION:-iad}}"
 org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
 config="$INPUT_CONFIG"
-database="${DATABASE_URL=${DATABASE_URL}}"
 
 sed s/od-api/"$app"/g 
 
@@ -38,11 +37,11 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   exit 0
 fi
 
-echo $database
+echo $DATABASE_URL
 
 # Deploy the Fly app, creating it first if needed.
 if ! flyctl status --app "$app"; then
-  flyctl secrets set "$database" --config "$config" --app "$app"
+  flyctl secrets set DATABASE_URL=$DATABASE_URL --config "$config" --app "$app"
   flyctl launch --now --copy-config --name "$app" --image "$image" --region "$region" --org "$org"
 elif [ "$INPUT_UPDATE" != "false" ]; then
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
