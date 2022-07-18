@@ -24,7 +24,7 @@ org="${INPUT_ORG:-${FLY_ORG:-personal}}"
 image="$INPUT_IMAGE"
 config="$INPUT_CONFIG"
 
-sed s/od-api/"$app"/g 
+sed -i'.original' s/od-api/"$app"/g apps/api/fly.toml
 
 if ! echo "$app" | grep "$PR_NUMBER"; then
   echo "For safety, this action requires the app's name to contain the PR number."
@@ -36,8 +36,6 @@ if [ "$EVENT_TYPE" = "closed" ]; then
   flyctl apps destroy "$app" -y || true
   exit 0
 fi
-
-echo "$DATABASE_URL"
 
 # Deploy the Fly app, creating it first if needed.
 if ! flyctl status --app "$app"; then
