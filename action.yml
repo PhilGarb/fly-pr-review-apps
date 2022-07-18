@@ -1,6 +1,6 @@
-name: "PR Review Apps on fly.io"
+name: "PR Review Apps on fly.io for monorepo"
 description: "Deploy temporary apps from pull requests on Fly.io"
-author: Fly
+author: OD
 branding:
   icon: "upload-cloud"
   color: "purple"
