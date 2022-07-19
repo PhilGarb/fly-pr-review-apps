@@ -42,6 +42,7 @@ if ! flyctl status --app "$app"; then
   flyctl secrets set DATABASE_URL="$DATABASE_URL" ACCESS_TOKEN_SECRET="$ACCESS_TOKEN_SECRET" ADMIN_ACCOUNT_WHITELIST="$ADMIN_ACCOUNT_WHITELIST" DEV_ACCOUNT_WHITELIST="$DEV_ACCOUNT_WHITELIST" EMAIL_FROM_ADDRESS="$EMAIL_FROM_ADDRESS" FEATURE_WHITELIST="$FEATURE_WHITELIST" PUBLIC_API_DOCUMENTATION="$PUBLIC_API_DOCUMENTATION" REFRESH_TOKEN_SECRET="$REFRESH_TOKEN_SECRET" SMTP_HOST="$SMTP_HOST" SMTP_PASSWORD="$SMTP_PASSWORD" SMTP_PORT="$SMTP_PORT" SMTP_USERNAME="$SMTP_USERNAME" --config "$config" --app "$app"
 elif [ "$INPUT_UPDATE" != "false" ]; then
   flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image" --region "$region" --strategy immediate
+fi
 
 # Attach postgres cluster to the app if specified.
 if [ -n "$INPUT_POSTGRES" ]; then
