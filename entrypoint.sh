@@ -47,7 +47,7 @@ flyctl deploy --config "$config" --app "$app" --region "$region" --image "$image
 
 # Attach postgres cluster to the app if specified.
 if [ -n "$INPUT_POSTGRES" ]; then
-  flyctl postgres attach "$INPUT_POSTGRES" || true
+  flyctl postgres attach "$INPUT_POSTGRES" --app "$app" || true
 fi
 
 # Make some info available to the GitHub workflow.
